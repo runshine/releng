@@ -244,16 +244,16 @@ def roll(bundle: Bundle,
             return
     except urllib.request.HTTPError as e:
         if e.code != 404:
-            raise CommandError("network error") from e
+            raise CommandError("network error: " + public_url) from e
 
-    s3_url = "s3://s3.819819.xyz/deps/{version}/{filename}".format(version=version, filename=filename)
+    s3_url = "myminio/deps/{version}/{filename}".format(version=version, filename=filename)
 
     # We will most likely need to build, but let's check S3 to be certain.
-    r = subprocess.run(["aws", "s3", "ls", s3_url], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding="utf-8")
+    r = subprocess.run(["./mc", "ls", s3_url], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding="utf-8")
     if r.returncode == 0:
         return
     if r.returncode != 1:
-        raise CommandError(f"unable to access S3: {r.stdout.strip()}")
+        raise CommandError(f"unable to access S3: {r.stdout.strip()}, {s3_url}")
 
     artifact = build(bundle, build_machine, host_machine)
 
