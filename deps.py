@@ -246,7 +246,7 @@ def roll(bundle: Bundle,
         if e.code != 404:
             raise CommandError("network error") from e
 
-    s3_url = "s3://build.frida.re/deps/{version}/{filename}".format(version=version, filename=filename)
+    s3_url = "s3://s3.819819.xyz/deps/{version}/{filename}".format(version=version, filename=filename)
 
     # We will most likely need to build, but let's check S3 to be certain.
     r = subprocess.run(["aws", "s3", "ls", s3_url], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding="utf-8")
@@ -1093,7 +1093,7 @@ class CommandError(Exception):
 
 DEPS_TOML_PATH = RELENG_DIR / "deps.toml"
 
-BUNDLE_URL = "https://build.frida.re/deps/{version}/{filename}"
+BUNDLE_URL = "https://s3.819819.xyz/deps/{version}/{filename}"
 
 
 class Bundle(Enum):
