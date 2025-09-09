@@ -238,7 +238,7 @@ def roll(bundle: Bundle,
 
     # First do a quick check to avoid hitting S3 in most cases.
     request = urllib.request.Request(public_url)
-       request.get_method = lambda: "HEAD"
+    request.get_method = lambda: "HEAD"
     try:
         with urllib.request.urlopen(request) as r:
             return
