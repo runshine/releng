@@ -238,7 +238,7 @@ def roll(bundle: Bundle,
 
     # First do a quick check to avoid hitting S3 in most cases.
     request = urllib.request.Request(public_url)
-    request.get_method = lambda: "HEAD"
+       request.get_method = lambda: "HEAD"
     try:
         with urllib.request.urlopen(request) as r:
             return
@@ -271,10 +271,10 @@ def roll(bundle: Bundle,
                        ],
                        check=True)
 
-    subprocess.run(["aws", "s3", "cp", artifact, s3_url], check=True)
+    subprocess.run(["./mc", "cp", "-r", artifact, s3_url], check=True)
 
     # Use the shell for Windows compatibility, where npm generates a .bat script.
-    subprocess.run("cfcli purge " + public_url, shell=True, check=True)
+    # subprocess.run("cfcli purge " + public_url, shell=True, check=True)
 
     if activate and bundle == Bundle.TOOLCHAIN:
         configure_bootstrap_version(version)
